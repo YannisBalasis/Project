@@ -1,0 +1,54 @@
+public class Main {
+
+    public static void main(String args[])
+    {
+        Admin a = new Admin("Yannis", "6978308475");
+        Beneficiary b0 = new Beneficiary("Labros", "6980329110");
+        Beneficiary b1 = new Beneficiary("Elenh", "6949836721", 3);
+        Donator d = new Donator("Nikos", "6947823980");
+
+        Organization org=new Organization("Organization",a);
+        Menu menu=new Menu(org);
+
+        Material milk = new Material("Milk","Cow Milk",1,200,400,700);
+        Material sugar = new Material("Sugar"," Sugar",2,100,300,600);
+        Material rice = new Material("Rice"," Rice", 3,300,500,800);
+        Service MedicalSupport = new Service("MedicalSupport","All Day Available",4);
+        Service PsychologicalSupport = new Service("PsychologicalSupport","12 Hours",5);
+        Service MentallySupport = new Service("Mentally Support","4 Hours",6);
+
+        org.addEntity(milk);
+        org.addEntity(sugar);
+        org.addEntity(rice);
+        org.addEntity(MedicalSupport);
+        org.addEntity(PsychologicalSupport);
+        org.addEntity(MentallySupport);
+
+        org.insertBeneficiary(b0);
+        org.insertBeneficiary(b1);
+        org.insertDonator(d);
+
+
+        RequestDonation rdSugar = new RequestDonation(sugar,300);
+        RequestDonation rdRice = new RequestDonation(rice,600);
+        RequestDonation rdMilk = new RequestDonation(milk,1000);
+        RequestDonation rdMedicalSupport = new RequestDonation(MedicalSupport,6);
+        RequestDonation rdPsychologicalSupport = new RequestDonation(PsychologicalSupport,25);
+        RequestDonation rdMentallySupport = new RequestDonation(MentallySupport,40);
+
+
+        RequestDonationList rdList = new RequestDonationList();
+
+        rdList.add(rdSugar,org);
+        rdList.add(rdRice,org);
+        rdList.add(rdMilk,org);
+        rdList.add(rdMentallySupport,org);
+        rdList.add(rdMedicalSupport,org);
+        rdList.add(rdPsychologicalSupport,org);
+
+        org.setCurrentDonations(rdList);
+
+        menu.getMenu();
+
+    }
+}
