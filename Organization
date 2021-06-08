@@ -1,0 +1,162 @@
+import java.util.ArrayList;
+
+public class Organization {
+
+    String name;
+    Admin  admin;
+    ArrayList <Entity> entityList;
+    ArrayList <Donator> donatorList;
+    ArrayList <Beneficiary> beneficiaryList;
+    RequestDonationList currentDonations;
+
+    Organization(){
+        entityList = new ArrayList<>();
+        donatorList = new ArrayList<>();
+        beneficiaryList = new ArrayList<>();
+    }
+
+    public Organization(String name, Admin admin) {
+
+        this.name = name;
+        this.admin = admin;
+
+        entityList = new ArrayList<>();
+        donatorList = new ArrayList<>();
+        beneficiaryList = new ArrayList<>();
+
+    }
+    public RequestDonationList getCurrentDonations() {
+        return currentDonations;
+    }
+
+    public 	ArrayList<Entity> getEnList(){
+        return entityList;
+    }
+
+    public void setCurrentDonations(RequestDonationList crD) {
+        currentDonations = crD;
+    }
+
+    public void setAdmin(Admin admin) {
+
+        this.admin = admin;
+    }
+
+    public Admin getAdmin() {
+
+        return admin;
+    }
+
+    public void addEntity(Entity en) {
+
+        boolean exist = false;
+        for(Entity e: entityList) {
+
+            if (e.getId() == en.getId()) {
+                exist = true;
+            }
+        }
+        if(!exist) {
+            entityList.add(en);
+        }
+
+    }
+
+    public void removeEntity(User user, int in) {
+
+        if(user == admin) {
+            entityList.remove(in);
+        } else {
+            System.out.println("You don`t have the authorization to do that!");
+        }
+
+    }
+
+    public void insertDonator(Donator dnt) {
+
+        boolean exist = false;
+        for(Donator d: donatorList) {
+
+            if (d.getName() == dnt.getName() && d.getPhone() == dnt.getPhone()) {
+                exist = true;
+            }
+        }
+
+        if(!exist) {
+            donatorList.add(dnt);
+        }
+
+    }
+
+    public void removeDonator(int in) {
+        donatorList.remove(in);
+    }
+
+    public void insertBeneficiary(Beneficiary bnf) {
+
+        boolean exist = false;
+        for(Beneficiary b: beneficiaryList) {
+
+            if (b.getName() == bnf.getName() && b.getPhone() == bnf.getPhone()) {
+                exist = true;
+            }
+
+        }
+        if(!exist) {
+            beneficiaryList.add(bnf);
+        }
+
+    }
+
+    public void removeBeneficiary(int in) {
+
+        beneficiaryList.remove(in);
+
+    }
+
+    public void listEntities() {
+
+        System.out.println("Materials are :");
+        for(Entity e: entityList) {
+            if(e instanceof Material) {
+                System.out.println(e.getDetails());
+            }
+        }
+
+        System.out.println("Services are :");
+
+        for(Entity e: entityList) {
+
+            if(e instanceof Service){
+                System.out.println(e.getDetails());
+            }
+
+        }
+
+    }
+
+    public void listBeneficiaries() {
+        int i=1;
+
+        for(Beneficiary d : beneficiaryList) {
+
+            System.out.println(i +"-"+" Name: " + d.getName() + " " + " Phone number: " + d.getPhone());
+            i++;
+
+        }
+
+    }
+
+    public void listDonators() {
+        int i=1;
+
+        for(Donator d : donatorList) {
+
+            System.out.println(i +"-"+"Name: " + d.getName() + " " + " Phone number: " + d.getPhone());
+            i++;
+
+        }
+
+    }
+
+}
