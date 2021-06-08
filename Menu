@@ -1,0 +1,571 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Menu {
+
+    String telephone;
+    Organization o = new Organization();
+    Offers of = new Offers();
+    Requests req=new Requests();
+
+
+    public Menu() {
+    }
+
+    public Menu(Organization o) {
+
+        this.o = o;
+    }
+
+    public void getMenu() {
+
+        Admin a = new Admin("Yannis", "6978308475");
+        Beneficiary b0 = new Beneficiary("Labros", "6980329110");
+        Beneficiary b1 = new Beneficiary("Elenh", "6949836721", 3);
+        Donator d = new Donator("Nikos", "6947823980");
+
+        try (Scanner s = new Scanner(System.in);) {
+            System.out.println("Welcome to Volunteer and Donator Organization!");
+            System.out.println("----------------------------------------------");
+
+            while (true) {
+                System.out.println("Please , enter your phone number : ");
+                if (s.hasNextLong()) {
+                    telephone = s.nextLine();
+                    break;
+                } else {
+                    System.out.println("Wrong phone  number.Please try again:");
+                    s.nextLine();
+                }
+            }
+
+            Offers rdl = new Offers(); //List from donator
+            int option = 0;
+
+            {
+                if (a.getPhone().equalsIgnoreCase(telephone)) {
+                    System.out.println("You are the admin.");
+                    System.out.println("Welcome! \n\n");
+                    do {
+
+                        String mainMenu = ("Make a decision : \n" + " 1) View\n" + " 2) Monitor Organization\n" + " 3) Back\n" + " 4) Logout\n" + " 5) Exit\n");
+                        System.out.println(mainMenu);
+                        System.out.println("-----------------------------------");
+                        boolean validNumber = true;
+                        boolean limitNumber;
+
+                        do {
+                            validNumber = false;
+                            try {
+                                option = s.nextInt();
+                                do {
+                                    limitNumber = false;
+                                    switch (option) {
+
+
+                                        case 1:
+                                            System.out.println("Case Number 1.");
+                                            System.out.println("1 - Material");
+                                            System.out.println("2 - Services");
+
+                                            option = s.nextInt();
+
+
+                                            switch (option) {
+
+                                                case 1:
+
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+                                                        if (en instanceof Material) {
+                                                            RequestDonation rD1 = new RequestDonation(en, 0);
+                                                            System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                            of.add(rD1, o);
+                                                        }
+                                                    }
+                                                    break;
+
+                                                case 2:
+
+
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+                                                        if (en instanceof Service) {
+                                                            System.out.println(en.getName() + "\t" + rd.getQuantity());
+
+                                                        }
+                                                    }
+                                                    break;
+                                                    default:
+                                            }
+                                            break;
+
+
+                                        case 2:
+
+                                            System.out.println("Case Number 2.");
+                                            System.out.println("1 -List of Beneficiaries" + "\n" + "2 - List of Donators" + "\n" + "Make a decision:");
+                                            option = s.nextInt();
+
+                                            switch (option) {
+
+                                                case 1:
+                                                    System.out.println("All the Beneficiaries are: ");
+                                                    o.listBeneficiaries();
+
+                                                    break;
+
+                                                case 2:
+                                                    System.out.println("All the Donators are:");
+                                                    o.listDonators();
+
+                                                    break;
+                                            }
+                                            break;
+
+                                        case 3:
+                                            getMenu(); //epistrofh sthn arxikh selida tou systhmatos
+                                            break;
+                                        case 4:
+                                            logout(); // aposyndesh log out
+                                            break;
+                                        case 5:
+                                            exit(); // eksodos apo to systhma
+                                            break;
+
+                                        default:
+                                            validNumber = false;
+                                            limitNumber = true;
+                                            System.out.println("Make a valid decision [1-6] : ");
+                                            option = s.nextInt();
+
+                                    }
+                                } while (limitNumber);
+
+                            } catch (InputMismatchException ime) {
+                                validNumber = true;
+                                System.out.println("Please enter only numbers!");
+                                s.nextLine();
+                            }
+                        } while (validNumber);
+
+                    } while (option != 5);
+
+                } else if (d.getPhone().equalsIgnoreCase(telephone)) {
+                    System.out.println("You are a Donator. ");
+                    System.out.println("Welcome! \n\n.");
+                    String mainMenu = ("Make a decision: \n"
+                            + " 1) Add Offer\n"
+                            + " 2) Show Offer\n"
+                            + " 3) Commit\n"
+                            + " 4) Back\n"
+                            + " 5) Logout\n"
+                            + " 6) Exit");
+                    System.out.println(mainMenu);
+                    boolean validNumber = true;
+                    boolean limitNumber;
+
+                    do {
+                        validNumber = false;
+
+                        try {
+                            option = s.nextInt();
+                            do {
+                                limitNumber = false;
+                                switch (option) {
+                                    case 1:
+                                        System.out.println("Case  Number 1.");
+                                        System.out.println("1 - Material");
+                                        System.out.println("2 - Services");
+
+                                        option = s.nextInt();
+
+
+                                        switch (option) {
+                                            case 1:
+
+                                                for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                    Entity en = rd.getEntity();
+                                                    if (en instanceof Material) {
+                                                        RequestDonation rd1 = new RequestDonation(en, 0);
+                                                        System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                        of.add(rd1, o);
+
+                                                    }
+                                                }
+
+                                                System.out.println("How much do you want to add in each?");
+
+                                                for (RequestDonation rd : of.getList()) {
+                                                    Entity en = rd.getEntity();
+                                                    if (en instanceof Material) {
+                                                        option = s.nextInt();
+                                                        rd.setQuantity(rd.getQuantity() + option);
+
+                                                    }
+                                                }
+                                                break;
+
+                                            case 2:
+
+                                                for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                    Entity en = rd.getEntity();
+                                                    if (en instanceof Service) {
+                                                        System.out.println(en.getName() + " " + rd.getQuantity());
+                                                    }
+                                                }
+
+                                                System.out.println("How much do you want to add in each?");
+
+                                                for (RequestDonation rd : of.getList()) {
+                                                    Entity en = rd.getEntity();
+                                                    if (en instanceof Service) {
+                                                        option = s.nextInt();
+                                                        rd.setQuantity(rd.getQuantity() + option);
+                                                    }
+                                                }
+                                                break;
+                                                default:
+                                        }
+
+                                        d.addOffer(of);
+                                        break;
+                                    case 2:
+                                        System.out.println("Case Number 2.");
+                                        for (RequestDonation rd : of.getList()) {
+                                            Entity en = rd.getEntity();
+                                            System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                        }
+
+                                        System.out.println("1 - Delete");
+                                        System.out.println("2 - Edit");
+                                        System.out.println("3 - Back");
+
+                                        option = s.nextInt();
+                                        switch (option) {
+                                            case 1:
+                                                of.reset();
+                                                break;
+                                            case 2:
+                                                System.out.println("Use a position  number in order to select the product you want: ");
+                                                option = s.nextInt();
+                                                System.out.println("Now choose the new value ");
+                                                int quan = s.nextInt();
+
+                                                of.modify(option + 1, quan);
+                                                break;
+                                            case 3:
+                                                getMenu();
+                                                break;
+                                            default:
+                                                System.out.println("Wrong choice!");
+                                                getMenu();
+                                        }
+                                        break;
+
+                                    case 3:
+                                        int i = 0;
+                                        for (RequestDonation rd : of.getList()) {
+
+                                            o.getCurrentDonations().modify(i, rd.getQuantity() + o.getCurrentDonations().getWithIndex(i).getQuantity());
+                                            i++;
+                                        }
+
+                                        System.out.println("Accomplishment Donation");
+                                        of.reset();
+
+                                        break;
+                                    case 4:
+                                        System.out.println("Case Number  4.");
+                                        getMenu(); //epistrofh sto menu
+                                        break;
+                                    case 5:
+
+                                        logout(); //eksodos
+                                        break;
+                                    case 6:
+                                        exit();
+                                        break;
+                                    default:
+                                        validNumber = false;
+                                        limitNumber = true;
+                                        System.out.println("Try a valid choice  [1-6] : ");
+                                        option = s.nextInt();
+
+                                }
+                            } while (limitNumber);
+
+                        } catch (InputMismatchException ime) {
+                            validNumber = true;
+                            System.out.println("Please enter only numbers.");
+                            s.nextLine();
+                        }
+                    }
+                    while (validNumber);
+
+                } else if (b0.getPhone().equalsIgnoreCase(telephone) || b1.getPhone().equalsIgnoreCase(telephone)) {
+                    System.out.println("You are Beneficiary.");
+
+                    System.out.println("Welcome ! \n\n");
+
+                    do {
+                        System.out.println("-----------------------------------");
+                        String mainMenu = ("Make a choice: \n" + " 1) Add Request\n" + " 2) Show Requests\n" + " 3) Commit\n" + " 4) Back\n" + " 5) Logout\n" + " 6) Exit");
+                        System.out.println(mainMenu);
+                        System.out.println("-----------------------------------");
+                        boolean validChoice = true;
+                        boolean limitChoice;
+
+                        do {
+                            validChoice = false;
+
+                            try {
+                                option = s.nextInt();
+                                do {
+                                    limitChoice = false;
+                                    switch (option) {
+                                        //Add Request
+                                        case 1:
+                                            System.out.println("Case Number 1.");
+                                            System.out.println("1 - Material");
+                                            System.out.println("2 - Services");
+
+                                            option = s.nextInt();
+
+                                            switch (option) {
+
+                                              case 1:
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+
+                                                        if (en instanceof Material) {
+                                                            RequestDonation rd1 = new RequestDonation(en, 0);
+                                                            System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                            of.add(rd1, o);
+                                                        }
+                                                    }
+
+                                                    System.out.println("How much do you want from each?");
+
+                                                    for (RequestDonation rd : of.getList()) {
+                                                        Entity en = rd.getEntity();
+
+                                                        if (en instanceof Material) {
+                                                            option = s.nextInt();
+                                                            rd.setQuantity(rd.getQuantity() + option);
+                                                        }
+                                                    }
+                                                    break;
+
+
+                                                case 2:
+
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+                                                        if (en instanceof Service) {
+                                                            System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                            of.add(rd, o);
+
+                                                        }
+                                                    }
+
+                                                    System.out.println("How much do you want from each?");
+                                                    if(s.hasNext());
+
+                                                    for (RequestDonation rd : of.getList()) {
+                                                        Entity en = rd.getEntity();
+
+                                                        if (en instanceof Service) {
+                                                            option = s.nextInt();
+                                                            rd.setQuantity(rd.getQuantity() + option );
+
+                                                        }
+                                                    }
+                                                    break;
+
+                                                default:
+                                                    System.out.println("Wrong Choice. Try again:");
+                                                    getMenu();
+
+
+                                            }
+                                            b1.addRequest(req);
+                                            break;
+
+                                        //Show Requests
+                                        case 2:
+
+                                            System.out.println("Case Number  2.");
+                                            for (RequestDonation rd : of.getList()) {
+                                                Entity en = rd.getEntity();
+                                                System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                            }
+
+                                            System.out.println("1 -  Delete");
+                                            System.out.println("2 - Edit");
+                                            System.out.println("3 - Back");
+
+                                            option = s.nextInt();
+                                            switch (option) {
+                                                case 1:
+                                                    req.reset();
+                                                    break;
+                                                case 2:
+                                                    System.out.println("Use a position  number in order to select the product you want:");
+                                                    option = s.nextInt();
+                                                    System.out.println("Now choose the new value");
+                                                    int quan = s.nextInt();
+
+                                                    of.modify(option + 1, quan);
+
+                                                    break;
+                                                case 3:
+                                                    getMenu();
+                                                    break;
+                                                default:
+                                                    System.out.println("Wrong Choice ");
+                                                    getMenu();
+
+                                            }
+                                            break;
+
+                                        case 3:
+                                            int i = 0;
+                                            for (RequestDonation rd : of.getList()) {
+
+                                                o.getCurrentDonations().modify(i, rd.getQuantity() + o.getCurrentDonations().getWithIndex(i).getQuantity());
+                                                i++;
+                                            }
+
+                                            System.out.println("Accomplish Donation");
+                                            of.reset();
+
+                                            break;
+
+                                        case 4:
+                                            System.out.println("Case  Number 4.");
+                                            getMenu();
+                                            break;
+                                        case 5:
+                                            logout();
+                                            break;
+                                        case 6:
+                                            exit();
+                                            break;
+                                        default:
+                                            validChoice = false;
+                                            limitChoice = true;
+                                            System.out.println("Mke a valid choice [1-6] : ");
+                                            option = s.nextInt();
+
+                                    }
+                                } while (limitChoice);
+
+                            } catch (InputMismatchException ime) {
+                                validChoice = true;
+                                System.out.println("Please enter only numbers !");
+                                s.nextLine();
+                            }
+                        } while (validChoice);
+                    } while(option != 6);
+                }
+                else {
+                    NewUser();
+                }
+            }
+        }
+    }
+
+
+    public void logout () {
+        Scanner log = new Scanner(System.in);
+        String s;
+        boolean validChoice;
+
+        validChoice = true;
+        System.out.println("You have logged out. Do you want to Sign in again? (CHOICE: YES / NO) ");
+        s = log.next();
+        if (s.equals("yes") || s.equals("Yes") ||  s.equals("YES")) {
+            getMenu();
+        } else {
+            exit();
+        }
+
+    }
+    public void exit () {
+        System.out.println(" Thank you for your participation!!");
+    }
+
+
+    public void NewUser () {
+
+        Admin a = new Admin();
+        Donator d = new Donator();
+        Beneficiary b = new Beneficiary();
+
+        try (Scanner sc = new Scanner(System.in)) {
+            while (true) {
+
+                System.out.println("You are not registered in our System.Do you want to register as  Beneficiary or as Donator?");
+
+                if (sc.next().equals("Donator") || sc.next().equals("donator")) {
+                    System.out.println("Enter your Name:");
+                    sc.nextLine();
+                    String s1 = sc.nextLine();
+                    d.setName(s1);
+                    while (true) {
+                        System.out.println("Enter your phone number  :");
+                        if (sc.hasNextLong()) {
+                            String s2 = (sc.next());
+                            d.setPhone(s2);
+                            break;
+                        } else {
+                            System.out.println("Invalid phone number . Try again with a valid phone number .");
+                            sc.nextLine();
+                        }
+                    }
+                    System.out.println("Congratulations! You are a new Donator : \n " + d.getName() + " " + d.getPhone());
+                    o.insertDonator(d);
+                    System.out.println("All donators are: ");
+                    o.listDonators();
+
+                    if (sc.hasNext())
+                        break;
+                } else if (sc.next().equals("Beneficiary") || sc.next().equals("beneficiary")) {
+                    System.out.println("Enter your Name: ");
+                    sc.nextLine();
+                    String s3 = sc.nextLine();
+                    b.setName(s3);
+
+                    while (true) {
+                        System.out.println("Enter your phone number : ");
+                        if (sc.hasNextLong()) {
+                            String s4 = (sc.next());
+                            b.setPhone(s4);
+                            break;
+                        } else {
+                            System.out.println("Invalid phone number . Try again with a valid phone number :");
+                            sc.nextLine();
+                        }
+                    }
+                    System.out.println("Congratulations! Successfully signed in: \n " + b.getName() + " " + b.getPhone());
+                    o.insertBeneficiary(b);
+                    System.out.println("All Beneficiaries are: ");
+
+                    o.listBeneficiaries();
+                    if (sc.hasNext())
+                        break;
+
+                } else {
+                    System.out.println("Sorry, your registration is invalid. Try again!");
+                }
+            }
+        }
+    }
+}
