@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+
+class Beneficiary extends User {
+
+
+    private int amountOfPeople;
+    ArrayList <RequestDonation> receivedList= new ArrayList<RequestDonation> ();
+    ArrayList <Requests> requestsList= new ArrayList<Requests> ();
+
+    Beneficiary() {
+    }
+
+    Beneficiary(String name, String phone) {
+        super(name, phone);
+        amountOfPeople = 1;
+        receivedList = new ArrayList <RequestDonation> ();
+        requestsList = new ArrayList <> ();
+    }
+
+    Beneficiary(String name, String phone, int amountOfPeople) {
+        super(name, phone);
+        this.amountOfPeople = amountOfPeople;
+        receivedList = new ArrayList<RequestDonation>();
+        requestsList = new ArrayList<>();
+    }
+
+    public int getAmountOfPeople() {
+        return amountOfPeople;
+    }
+
+    public void addRequest(Requests r) {
+        requestsList.add(r);
+    }
+
+    public void removeRequest(int in) {
+        requestsList.remove(in);
+
+    }
+
+    public void modifyRequest(int in, double qn) {
+
+        requestsList.get(in).modify(in,qn);
+    }
+
+    public void commitRequest(RequestDonationList r,Organization o) { //dhmiourgia antikeimenwn klasewn
+
+        int i = 0;
+        for (RequestDonation rd : r.getList()) {
+
+            o.getCurrentDonations().modify(i, o.getCurrentDonations().getWithIndex(i).getQuantity()-rd.getQuantity());
+            i++;
+        }
+        System.out.println("Donation Completion!"); //mhnyma oloklhrwshs dwreas
+        r.reset();
+    }
+
+    public void reset() { //katharismos
+        requestsList.clear();
+    }
+}
