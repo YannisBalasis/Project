@@ -1,0 +1,100 @@
+import java.util.ArrayList;
+
+public class RequestDonationList
+{
+
+    ArrayList<RequestDonation> rDentities;
+
+    public RequestDonationList(){
+        rDentities = new ArrayList<>();
+    }
+
+    public RequestDonationList(ArrayList<RequestDonation> rdEntities) {
+        this.rDentities = rdEntities;
+
+    }
+    public ArrayList<RequestDonation> getList(){
+
+        return rDentities;
+    }
+
+    public RequestDonation get(int id) {
+
+        for(RequestDonation rd : rDentities) {
+
+            if(rd.getEntity().getId() == id) {
+
+                return rd;
+            }
+
+        }
+        return null;
+    }
+
+    public RequestDonation getWithIndex(int index) {
+
+        return rDentities.get(index);
+    }
+
+    public void add(RequestDonation rdnt, Organization org) {
+
+        boolean merged = false;
+        boolean existanceInOrg = false;
+
+
+        for(Entity e : org.getEnList()) {
+
+            if (e.getId() == rdnt.getEntity().getId()) {
+
+                existanceInOrg = true;
+
+            }
+
+        }
+        if (existanceInOrg) {
+            for(RequestDonation rd : rDentities) {
+
+                if(rd.compare(rd.getEntity(), rdnt.getEntity()) == 0) {
+
+                    rd.setQuantity(rd.getQuantity() + rdnt.getQuantity());
+                    merged = true;
+
+                }
+
+            }
+            if(!merged) {
+
+                rDentities.add(rdnt);
+
+            }
+        } else {
+
+            System.err.println("This entity does not exists.");
+
+        }
+    }
+
+    public void remove(RequestDonation in) {
+
+        rDentities.remove(in);
+
+    }
+
+    public void modify(int in, double qn) {
+
+        rDentities.get(in).setQuantity(qn);
+
+    }
+
+    public void monitor() {
+
+        for(RequestDonation rd : rDentities) {
+            System.out.println("Entity Name: " + rd.getEntity().getName() + " Quantity: " + rd.getQuantity());
+        }
+
+    }
+    public void reset() {
+
+        rDentities.clear();
+    }
+}
