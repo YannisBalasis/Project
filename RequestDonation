@@ -1,0 +1,37 @@
+import java.util.Comparator;
+
+public class RequestDonation implements Comparator <Entity>
+{
+    Entity entity;
+    double quantity;
+
+    public RequestDonation() {
+    }
+
+
+    public RequestDonation(Entity entity, double quantity) {
+
+        this.entity = entity;
+        this.quantity = quantity;
+
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(double qn) {
+        quantity = qn;
+    }
+
+    @Override
+    public int compare(Entity e1, Entity e2 ){
+        if (e1.getId() == e2.getId()) {
+            return 0;
+        }
+        return -1;
+    }
+}
