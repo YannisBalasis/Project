@@ -1,0 +1,50 @@
+import java.util.ArrayList;
+
+public class Donator extends User{
+
+    private ArrayList <Offers> offersList;
+
+    Donator() {
+    }
+
+    Donator(String name, String phone) {
+        super(name, phone);
+        offersList = new ArrayList<>();
+    }
+
+    public void addOffer(Offers j) {
+
+        offersList.add(j);
+    }
+
+    public void removeOffer(int in) { //in = intex deikths posothtas
+
+        offersList.remove(in);
+    }
+
+    public void modifyOffer(int in, int indexOffer, double qn) {
+
+        offersList.get(in).modify(indexOffer, qn);
+    }
+
+    public void commitOffers(Organization org) {
+
+        for (Offers of: offersList) {
+            of.commit(org);
+        }
+    }
+
+    public void monitorOffers() {
+
+        for(int i = 0; i < offersList.size(); i++) {
+
+            System.out.println("Offer " + i + ": "); //emfanish dedomenwn
+            offersList.get(i).monitor();
+        }
+    }
+
+    public void reset()
+    {
+        offersList.clear(); //katharismos
+    }
+}
